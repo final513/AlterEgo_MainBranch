@@ -2,36 +2,55 @@
 
 scr_get_input();
 
-// Move Left
-if (left_key) {
-    phy_position_x -= spd;
-    sprite_index = spr_player_left;
-    image_speed = .3;
+if ( (dash_key) and (hspd != 0 or vspd !=0 ) ) {
+    state = scr_dash_state;
+    alarm[0] = room_speed / 6;
 }
 
-//Move Right
-if (right_key) {
-    phy_position_x += spd;
-    sprite_index = spr_player_right;
-    image_speed = .3;
+// Get direction
+
+dir = point_direction (0, 0, xaxis, yaxis);
+
+// Get length
+
+if (xaxis == 0 and yaxis == 0) {
+    len = 0;
+} else {
+    len = spd;
 }
 
-// Move Up
-if (up_key) {
-    phy_position_y -= spd;
-    sprite_index = spr_player_up;
-    image_speed = .3;
-}
+// Get hspd and vspd
 
-// Move Down
-if (down_key) {
-    phy_position_y += spd;
-    sprite_index = spr_player_down;
-    image_speed = .3;
-}
+hspd = lengthdir_x (len, dir);
+vspd = lengthdir_y (len, dir);
 
-//Stop animating
-if (!down_key and !up_key and !left_key and !right_key) {
-    image_speed = 0;
+// Move
+
+phy_position_x += hspd;
+phy_position_y += vspd;
+
+// Control the sprite
+
+image_speed = .2;
+if (len == 0) { 
     image_index = 0;
 }
+
+// Vertical sprites
+
+if (vspd > 0) {
+    sprite_index = spr_player_down;
+} else if (vspd < 0) {
+    sprite_index = spr_player_up;
+}
+
+// Horizontal sprites
+
+if (hspd > 0) {
+    sprite_index = spr_player_right;
+} else if (hspd < 0) {
+    sprite_index = spr_player_left;
+}
+
+
+
