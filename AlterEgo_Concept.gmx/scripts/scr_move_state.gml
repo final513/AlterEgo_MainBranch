@@ -7,6 +7,11 @@ if ( (dash_key) and (hspd != 0 or vspd !=0 ) ) {
     alarm[0] = room_speed / 6;
 }
 
+if (attack_key) {
+    image_index = 0;
+    state = scr_attack_state;
+}
+
 // Get direction
 
 dir = point_direction (0, 0, xaxis, yaxis);
